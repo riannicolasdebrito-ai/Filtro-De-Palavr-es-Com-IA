@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - 'FiltroDePalavroesAndroid_IA_GitHubActions.zip'
+      - 'FiltroDePalavroesAndroid_IA_GitHubActions_CORRIGIDO.zip'
       - '.github/workflows/android.yml'
 
 permissions:
@@ -31,7 +31,7 @@ jobs:
 
       - name: Extrair projeto
         run: |
-          unzip -o FiltroDePalavroesAndroid_IA_GitHubActions.zip -d projeto
+          unzip -o FiltroDePalavroesAndroid_IA_GitHubActions_CORRIGIDO.zip -d projeto
           find projeto -name gradlew -type f
 
       - name: Compilar APK
