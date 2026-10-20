@@ -1,0 +1,47 @@
+
+name: Gerar APK Android
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'FiltroDePalavroesAndroid_IA_GitHubActions.zip'
+      - '.github/workflows/android.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar o repositorio
+        uses: actions/checkout@v4
+
+      - name: Preparar Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Preparar Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+
+      - name: Extrair projeto
+        run: |
+          unzip -o FiltroDePalavroesAndroid_IA_GitHubActions.zip -d projeto
+          find projeto -name gradlew -type f
+
+      - name: Compilar APK
+        run: |
+          cd projeto/FiltroDePalavroesAndroid
+          gradle --no-daemon assembleDebug
+
+      - name: Disponibilizar APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: FiltroDePalavroes-debug
+          path: projeto/FiltroDePalavroesAndroid/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
